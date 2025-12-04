@@ -4,7 +4,6 @@
 #include <uipc/common/dllexport.h>
 #include <uipc/common/smart_pointer.h>
 #include <uipc/common/span.h>
-#include <fmt/format.h>
 #include <spdlog/spdlog.h>
 
 namespace uipc
@@ -119,4 +118,18 @@ inline void log(Logger::Level level, std::string_view fmt, Args&&... args)
 {
     Logger::current_logger().log(level, fmt, std::forward<Args>(args)...);
 }
+
+template<typename String, typename Format, typename... Args>
+[[nodiscard]] inline auto format(Format &&f, Args &&...args) noexcept {
+    using char_type = typename String::value_type;
+    using memory_buffer = fmt::basic_memory_buffer<char_type, fmt::inline_buffer_size, std::allocator<char_type>>;
+    memory_buffer buffer;
+    ::fmt::format_to(std::back_inserter(buffer), std::forward<Format>(f), std::forward<Args>(args)...);
+    return String{buffer.data(), buffer.size()};
+}
+template<typename Format, typename... Args>
+[[nodiscard]] inline auto format(Format &&f, Args &&...args) noexcept {
+    return format<std::string>(std::forward<Format>(f), std::forward<Args>(args)...);
+}
+
 }  // namespace uipc::logger

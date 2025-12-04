@@ -5,13 +5,13 @@
 if not is_plat("windows") then
     add_packages("tbb")
 end
-includes("app")
-if has_config("examples") then 
+includes("uipc_app")
+if has_config("uipc_examples") then 
     includes("examples")
 end
-if has_config("tests") then
+if has_config("uipc_tests") then
     includes("tests")
 end
-if has_config("benchmarks") then
+if has_config("uipc_benchmarks") then
     includes("benchmarks")
 end

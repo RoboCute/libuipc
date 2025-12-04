@@ -1,5 +1,5 @@
 add_requires("catch2")
-target("app")
+target("uipc_app")
     set_kind("static")
     set_group("apps")
     add_files("*.cpp")

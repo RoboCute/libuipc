@@ -3,7 +3,7 @@
 #include <fstream>
 #include <uipc/common/enumerate.h>
 
-#include <fmt/ranges.h>
+#include <spdlog/fmt/bundled/xchar.h>
 
 namespace uipc::geometry
 {

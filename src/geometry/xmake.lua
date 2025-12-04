@@ -1,4 +1,4 @@
-add_requires("libigl", "octree", "tbb")
+add_requires("octree", "tbb")
 
 target("uipc_geometry")
     add_rules("component")
@@ -12,4 +12,5 @@ target("uipc_geometry")
     add_defines()
     add_deps("uipc_core")
     add_packages("octree", "tbb")
-    add_packages("libigl", {public = true})
+    add_deps('libigl')
+    -- add_packages("libigl", {public = true})

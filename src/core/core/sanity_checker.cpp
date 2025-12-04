@@ -9,10 +9,10 @@
 
 namespace uipc::core
 {
-static S<dylib> load_sanity_check_module()
+static S<dylib::library> load_sanity_check_module()
 {
     static std::mutex m_cache_mutex;
-    static S<dylib>   m_cache;
+    static S<dylib::library>   m_cache;
 
     std::lock_guard lock{m_cache_mutex};
 
@@ -22,8 +22,7 @@ static S<dylib> load_sanity_check_module()
     // if not found, load it
     auto& uipc_config = uipc::config();
     auto  this_module =
-        uipc::make_shared<dylib>(uipc_config["module_dir"].get<std::string>(),
-                                 "uipc_sanity_check");
+        uipc::make_shared<dylib::library>(std::filesystem::path{uipc_config["module_dir"].get<std::string>()} / "uipc_sanity_check");
 
     std::string_view module_name = "sanity_check";
 

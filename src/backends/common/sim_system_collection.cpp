@@ -111,22 +111,3 @@ void SimSystemCollection::build_systems()
     built = true;
 }
 }  // namespace uipc::backend
-
-namespace fmt
-{
-appender formatter<uipc::backend::SimSystemCollection>::format(
-    const uipc::backend::SimSystemCollection& s, format_context& ctx) const
-{
-    int i = 0;
-    int n = s.m_sim_system_map.size();
-    for(const auto& [key, value] : s.m_sim_system_map)
-    {
-        fmt::format_to(ctx.out(),
-                       "{} {}{}",
-                       value->is_engine_aware() ? ">" : "*",
-                       value->name(),
-                       ++i != n ? "\n" : "");
-    }
-    return ctx.out();
-}
-}  // namespace fmt

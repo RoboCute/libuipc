@@ -1,15 +1,15 @@
-if get_config("backend") == "cuda" then
+if get_config("uipc_backend") == "cuda" then
     includes("cuda")
 end
 
 target("none")
-    add_rules("backend")
-    add_files("none/*.cpp")
+    add_rules("uipc_backend")
+    -- add_files("none/*.cpp")
     add_headerfiles("none/*.h")
 
-rule("backend")
+rule("uipc_backend")
     on_load(function (target)
-        print("Adding backend:", target:name())
+        -- print("Adding backend:", target:name())
 
         target:set("basename", "uipc_backend_" .. target:name())
 

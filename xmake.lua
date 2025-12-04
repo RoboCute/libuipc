@@ -1,22 +1,34 @@
 set_xmakever("2.9.8")
-
-option("gui", {default = false})
-option("pybind", {default = false, description = "Build pyuipc"})
-option("torch", {default = false, description = "Build pytorch extension"})
-option("examples", {default = true})
-option("tests", {default = true})
-option("benchmarks", {default = false})
-option("dev", {default = true, description = "Enable developer mode"})
-option("github_actions", {default = false})
-
-option("backend", {default = "cuda", description = "Build with CUDA backend"})
-
-option("python_version", {default = "3.11.x", description = "Specify python version"})
-option("python_system", {default = false, description = "Use system python"})
-
-includes("src", "apps", "xmake/*.lua")
-
+set_policy("check.auto_ignore_flags", false)
 add_rules("mode.release", "mode.debug", "mode.releasedbg")
+
+option("uipc_app", {default = true})
+-- option("gui", {default = false})
+option("uipc_pybind", {default = false, description = "Build pyuipc"})
+-- option("torch", {default = false, description = "Build pytorch extension"})
+option("uipc_examples", {default = true})
+option("uipc_tests", {default = true})
+option("uipc_benchmarks", {default = false})
+option("uipc_dev", {default = true, description = "Enable developer mode"})
+option("uipc_github_actions", {default = false})
+option("uipc_backend", {default = "cuda", description = "Build with CUDA backend"})
+option("uipc_projectdir")
+set_default(false)
+set_showmenu(false)
+after_check(function(option)
+    option:set_value(os.scriptdir())
+end)
+option_end()
+
+-- option("python_version", {default = "3.11.x", description = "Specify python version"})
+-- option("python_system", {default = false, description = "Use system python"})
+
+
+if has_config('uipc_app') then
+    includes("apps")
+end
+includes("src", "xmake/*.lua")
+
 
 set_languages("c++20")
 
@@ -33,11 +45,11 @@ end
 
 set_version("0.9.0")
 
-if has_config("dev") then
+if has_config("uipc_dev") then
     set_policy("compatibility.version", "3.0")
     set_policy("build.ccache", true)
 
-    if is_plat("windows") then
-        set_runtimes("MD")
-    end
+    -- if is_plat("windows") then
+    --     set_runtimes("MD")
+    -- end
 end

@@ -1,15 +1,15 @@
-add_requires(
-    "eigen", "nlohmann_json", "cppitertools", "magic_enum", "tinygltf", "dylib <3", "cpptrace",
-    -- Use non-header-only spdlog and fmt
-    "spdlog[shared,header_only=n,fmt_external=y]"
-)
+-- add_requires(
+--     "eigen", "nlohmann_json", "cppitertools", "magic_enum", "tinygltf", "dylib <3", "cpptrace",
+--     -- Use non-header-only spdlog and fmt
+--     "spdlog[shared,header_only=n,fmt_external=y]"
+-- )
 
-if is_plat("windows") then
-    -- https://forums.developer.nvidia.com/t/utf-8-option-for-the-host-function-in-cuda-msvc/312739
-    add_requireconfs("spdlog.fmt", {override = true, configs = {unicode = false}})
-else
-    add_requireconfs("spdlog", "spdlog.fmt", {override = true, system = false})
-end
+-- if is_plat("windows") then
+--     -- https://forums.developer.nvidia.com/t/utf-8-option-for-the-host-function-in-cuda-msvc/312739
+--     add_requireconfs("spdlog.fmt", {override = true, configs = {unicode = false}})
+-- else
+--     add_requireconfs("spdlog", "spdlog.fmt", {override = true, system = false})
+-- end
 
 target("uipc_core")
     add_rules("component")
@@ -24,9 +24,14 @@ target("uipc_core")
     if is_plat("linux") then
         add_syslinks("dl")
     end
-
-    add_packages(
-        "eigen", "nlohmann_json", "cppitertools", "magic_enum", "tinygltf", "dylib",
-        "cpptrace", "spdlog",
-        {public = true}
-    )
+    add_deps("eigen", "nlohmann_json", "cppitertools", "magic_enum", "tinygltf", "dylib",
+        "cpptrace", "lc-core")
+    on_load(function(target)
+        target:add('cxflags', "/bigobj", { public = true, tools = {"cl", "clang_cl"} })
+    end)
+        
+    -- add_packages(
+    --     "eigen", "nlohmann_json", "cppitertools", "magic_enum", "tinygltf", "dylib",
+    --     "cpptrace", "spdlog",
+    --     {public = true}
+    -- )

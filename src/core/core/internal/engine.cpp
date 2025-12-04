@@ -22,7 +22,7 @@ class Engine::Impl
     using Deleter = void (*)(IEngine*);
 
     string   m_backend_name;
-    S<dylib> m_module;
+    S<dylib::library> m_module;
 
     IEngine*   m_engine    = nullptr;
     S<IEngine> m_overrider = nullptr;
@@ -31,10 +31,10 @@ class Engine::Impl
     mutable bool m_sync_flag = false;
     string       m_workspace;
 
-    static unordered_map<string, S<dylib>> m_cache;
+    static unordered_map<string, S<dylib::library>> m_cache;
     static std::mutex                      m_cache_mutex;
 
-    static S<dylib> load_module(std::string_view backend_name)
+    static S<dylib::library> load_module(std::string_view backend_name)
     {
         std::lock_guard lock{m_cache_mutex};
 
@@ -46,8 +46,9 @@ class Engine::Impl
         // if not found, load it
         auto& uipc_config = uipc::config();
         auto  backend =
-            uipc::make_shared<dylib>(uipc_config["module_dir"].get<std::string>(),
-                                     fmt::format("uipc_backend_{}", backend_name));
+            uipc::make_shared<dylib::library>(
+                std::filesystem::path{uipc_config["module_dir"].get<std::string>()}  / fmt::format("uipc_backend_{}", backend_name)
+            );
 
         auto info             = make_unique<UIPCModuleInitInfo>();
         info->module_name     = backend_name;
@@ -196,7 +197,7 @@ class Engine::Impl
     }
 };
 
-unordered_map<string, S<dylib>> Engine::Impl::m_cache;
+unordered_map<string, S<dylib::library>> Engine::Impl::m_cache;
 std::mutex                      Engine::Impl::m_cache_mutex;
 
 

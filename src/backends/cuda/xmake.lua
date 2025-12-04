@@ -1,14 +1,14 @@
 add_requires("muda e01f9aabae4ed0dd91cf332af8e8fad435b9cced")
 
 target("cuda")
-    add_rules("backend")
-    if has_config("dev") then
+    add_rules("uipc_backend")
+    if has_config("uipc_dev") then
         add_rules("clangd")
     end
     add_files("**.cpp", "**.cu")
     add_headerfiles("**.h", "**.inl")
     add_includedirs(os.scriptdir(), {public = true})
-    if has_config("github_actions") then
+    if has_config("uipc_github_actions") then
         add_cugencodes("sm_89")
     else
         add_cugencodes("native")
@@ -24,6 +24,14 @@ target("cuda")
 
     add_deps("uipc_geometry")
     add_packages("muda")
+    on_load(function(target)
+        if target:is_plat('windows') then
+            target:add('defines', '__NV_NO_HOST_COMPILER_CHECK', {public = true})
+            target:add('cuflags', '-allow-unsupported-compiler', {public = true})
+            target:set('toolchains', 'msvc')
+        end
+        target:set('toolchains', 'cuda')
+    end)
 
 package("muda")
     set_kind("library", {headeronly = true})

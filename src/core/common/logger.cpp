@@ -1,4 +1,4 @@
-#include <fmt/core.h>
+#include <spdlog/fmt/bundled/xchar.h>
 #include <spdlog/common.h>
 #include <uipc/common/logger.h>
 #include <spdlog/spdlog.h>

@@ -43,13 +43,4 @@ class SimSystemCollection
     void cleanup_invalid_systems();
 };
 }  // namespace uipc::backend
-
-namespace fmt
-{
-template <>
-struct formatter<uipc::backend::SimSystemCollection> : public formatter<string_view>
-{
-    appender format(const uipc::backend::SimSystemCollection& s, format_context& ctx) const;
-};
-}  // namespace fmt
 #include "details/sim_system_collection.inl"

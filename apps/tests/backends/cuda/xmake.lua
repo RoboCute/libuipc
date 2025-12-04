@@ -2,10 +2,10 @@ target("backend_cuda")
     set_group("tests")
     add_rules("uipc_test")
     add_files("**.cu")
-    if has_config("dev") then
+    if has_config("uipc_dev") then
         add_rules("clangd")
     end
-    if has_config("github_actions") then
+    if has_config("uipc_github_actions") then
         add_cugencodes("sm_89")
     else
         add_cugencodes("native")

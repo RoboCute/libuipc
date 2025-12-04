@@ -1,5 +1,5 @@
 target("core")
     set_group("tests")
-    add_deps("app","cuda")
+    add_deps("uipc_app","cuda")
     add_rules("uipc_test")
     add_files("*.cpp")

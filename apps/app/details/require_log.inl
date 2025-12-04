@@ -1,6 +1,6 @@
 #include <algorithm>
-#include <fmt/printf.h>
-#include <fmt/color.h>
+#include <spdlog/fmt/printf.h>
+#include <spdlog/fmt/color.h>
 namespace uipc::test
 {
 template <spdlog::level::level_enum Level>

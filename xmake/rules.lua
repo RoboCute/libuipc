@@ -1,7 +1,7 @@
 rule("component")
     on_load(function (target)
         target:set("kind", "shared")
-        target:add("includedirs", path.join(os.projectdir(), "include"), {public = true})
+        target:add("includedirs", path.join(get_config("uipc_projectdir"), "include"), {public = true})
         if target:is_plat("windows") then
             target:add("defines", format("%s_EXPORT_DLL", target:name():upper()))
         end
@@ -9,7 +9,7 @@ rule("component")
     
 rule("clangd")
     on_config(function (target)
-        local clangd_config_file = path.join(os.projectdir(), ".clangd")
+        local clangd_config_file = path.join(get_config("uipc_projectdir"), ".clangd")
         if os.isfile(clangd_config_file) then
             return
         end

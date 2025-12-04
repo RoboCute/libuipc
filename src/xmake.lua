@@ -4,7 +4,7 @@ includes(
     "geometry"
 )
 
-if has_config("pybind") then
+if has_config("uipc_pybind") then
     includes("pybind")
 end
 
